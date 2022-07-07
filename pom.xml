@@ -9,12 +9,6 @@
   <name>mockbridge</name>
   <packaging>pom</packaging>
   <url>https://www.martinpallmann.de/mockbridge</url>
-  <scm>
-    <connection>scm:git:${project.scm.url}</connection>
-    <developerConnection>scm:git:${project.scm.url}</developerConnection>
-    <url>git@github.com:idhub-io/idhub-api.git</url>
-    <tag>HEAD</tag>
-  </scm>
 
   <modules>
     <module>jdk</module>
@@ -32,6 +26,14 @@
     <logstash.version>1.7</logstash.version>
     <slf4j.version>2.0.0-alpha7 </slf4j.version>
   </properties>
+
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub martinpallmann Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/martinpallmann/mockbridge</url>
+    </repository>
+  </distributionManagement>
 
   <dependencyManagement>
     <dependencies>
@@ -66,23 +68,8 @@
     </dependencies>
   </dependencyManagement>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
-
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>3.0.0-M6</version>
-        <configuration>
-          <scmCommentPrefix>[ci skip]</scmCommentPrefix>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
