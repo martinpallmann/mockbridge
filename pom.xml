@@ -5,10 +5,30 @@
 
   <groupId>de.martinpallmann</groupId>
   <artifactId>mockbridge</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
   <name>mockbridge</name>
+  <description>Glue code to use WireMock without needing a network.</description>
   <packaging>pom</packaging>
   <url>https://www.martinpallmann.de/mockbridge</url>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>Martin Pallmann</name>
+      <email>hi@martinpallmann.de</email>
+      <organization>Martin Pallmann</organization>
+      <organizationUrl>https://martinpallmann.de</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git://github.com/martinpallmann/mockbridge.git</connection>
+    <developerConnection>scm:git:git://github.com/martinpallmann/mockbridge.git</developerConnection>
+    <url>https://github.com/martinpallmann/mockbridge/tree/main</url>
+  </scm>
 
   <modules>
     <module>jdk</module>
@@ -24,14 +44,16 @@
     <lombock.version>1.18.24</lombock.version>
     <wiremock.version>2.33.2</wiremock.version>
     <logstash.version>1.7</logstash.version>
-    <slf4j.version>2.0.0-alpha7 </slf4j.version>
   </properties>
 
   <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
     <repository>
-      <id>github</id>
-      <name>GitHub martinpallmann Apache Maven Packages</name>
-      <url>https://maven.pkg.github.com/martinpallmann/mockbridge</url>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
 
@@ -70,6 +92,17 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.8</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -111,6 +144,7 @@
         </executions>
       </plugin>
     </plugins>
+
     <pluginManagement>
       <plugins>
         <plugin>
