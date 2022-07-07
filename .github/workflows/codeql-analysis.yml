@@ -1,5 +1,9 @@
 name: "CodeQL"
 
+
+env:
+  JAVA_HOME: $JAVA_HOME_17_X64
+
 on:
   push:
     branches: [ "main" ]
