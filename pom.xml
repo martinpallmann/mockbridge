@@ -11,6 +11,7 @@
   <url>https://www.martinpallmann.de/mockbridge</url>
   <scm>
     <developerConnection>scm:git:https://github.com/martinpallmann/mockbridge.git</developerConnection>
+    <tag>mockbridge-0.0.1</tag>
   </scm>
 
   <modules>
