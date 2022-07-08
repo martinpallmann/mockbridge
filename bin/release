@@ -6,12 +6,13 @@ if [[ $(git diff --stat) != '' ]]; then
 fi
 
 git checkout releases
-git rebase master
-mvn versions:set -DremoveSnapshot=true versions:commit
+git rebase main
+mvn versions:set -DremoveSnapshot=true
+mvn versions:commit
 version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
 git commit -am "new version"
 git tag -a "v$version" -m "version $version"
 git push
 mvn versions:set -DnextSnapshot=true
 git commit -am "new snapshot version"
-git checkout master
+git checkout main
