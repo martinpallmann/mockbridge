@@ -1,0 +1,17 @@
+#! /bin/sh
+
+if [[ $(git diff --stat) != '' ]]; then
+  echo 'Repository is dirty. Aborting.'
+  exit 1
+fi
+
+git checkout releases
+git rebase master
+mvn versions:set -DremoveSnapshot=true versions:commit
+version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+git commit -am "new version"
+git tag -a "v$version" -m "version $version"
+git push
+mvn versions:set -DnextSnapshot=true
+git commit -am "new snapshot version"
+git checkout master
