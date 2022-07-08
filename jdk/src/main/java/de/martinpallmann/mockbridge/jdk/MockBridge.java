@@ -1,15 +1,12 @@
 package de.martinpallmann.mockbridge.jdk;
 
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.direct.DirectCallHttpServer;
+import com.github.tomakehurst.wiremock.direct.DirectCallHttpServerFactory;
 import com.github.tomakehurst.wiremock.http.Response;
-import de.martinpallmann.mockbridge.jdk.api.JdkRequest;
-import de.martinpallmann.mockbridge.jdk.api.JdkResponseInfo;
-import de.martinpallmann.mockbridge.jdk.api.ResponseSubscription;
-import de.martinpallmann.mockbridge.jdk.api.WiremockResponse;
+import de.martinpallmann.mockbridge.jdk.api.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Builder.Default;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
@@ -27,23 +24,52 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
 public class MockBridge extends HttpClient {
 
     private final DirectCallHttpServer server;
-    @Default
-    private final Version version = Version.HTTP_1_1;
-    @Default
-    private final Redirect followRedirects = Redirect.NEVER;
+    private final Version version;
+    private final Redirect followRedirects;
     private final CookieHandler cookieHandler;
     private final ProxySelector proxySelector;
     private final Authenticator authenticator;
     private final Duration connectTimeout;
 
+    public static MockBridge httpClient(WireMockConfiguration configuration) {
+        final DirectCallHttpServerFactory factory = new DirectCallHttpServerFactory();
+        new DirectWireMockServer(configuration, factory);
+        return new MockBridge(
+                factory.getHttpServer(),
+                Version.HTTP_1_1,
+                Redirect.NEVER,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    public static MockBridge httpClient() {
+        return httpClient(wireMockConfig());
+    }
+
     @Override
     public Optional<CookieHandler> cookieHandler() {
         return Optional.ofNullable(cookieHandler);
+    }
+
+    public MockBridge cookieHandler(CookieHandler cookieHandler) {
+        return new MockBridge(
+                server,
+                version,
+                followRedirects,
+                cookieHandler,
+                proxySelector,
+                authenticator,
+                connectTimeout
+        );
     }
 
     @Override
@@ -51,14 +77,50 @@ public class MockBridge extends HttpClient {
         return Optional.ofNullable(connectTimeout);
     }
 
+    public MockBridge connectTimeout(Duration connectTimeout) {
+        return new MockBridge(
+                server,
+                version,
+                followRedirects,
+                cookieHandler,
+                proxySelector,
+                authenticator,
+                connectTimeout
+        );
+    }
+
     @Override
     public Redirect followRedirects() {
         return followRedirects;
     }
 
+    public MockBridge followRedirects(Redirect followRedirects) {
+        return new MockBridge(
+                server,
+                version,
+                followRedirects,
+                cookieHandler,
+                proxySelector,
+                authenticator,
+                connectTimeout
+        );
+    }
+
     @Override
     public Optional<ProxySelector> proxy() {
         return Optional.ofNullable(proxySelector);
+    }
+
+    public MockBridge proxy(ProxySelector proxySelector) {
+        return new MockBridge(
+                server,
+                version,
+                followRedirects,
+                cookieHandler,
+                proxySelector,
+                authenticator,
+                connectTimeout
+        );
     }
 
     @Override
@@ -76,9 +138,33 @@ public class MockBridge extends HttpClient {
         return Optional.ofNullable(authenticator);
     }
 
+    public MockBridge authenticator(Authenticator authenticator) {
+        return new MockBridge(
+                server,
+                version,
+                followRedirects,
+                cookieHandler,
+                proxySelector,
+                authenticator,
+                connectTimeout
+        );
+    }
+
     @Override
     public Version version() {
         return version;
+    }
+
+    public MockBridge version(Version version) {
+        return new MockBridge(
+                server,
+                version,
+                followRedirects,
+                cookieHandler,
+                proxySelector,
+                authenticator,
+                connectTimeout
+        );
     }
 
     @Override

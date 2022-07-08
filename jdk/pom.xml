@@ -6,11 +6,11 @@
   <parent>
     <artifactId>mockbridge</artifactId>
     <groupId>de.martinpallmann</groupId>
-    <version>0.0.3</version>
+    <version>0.0.4-SNAPSHOT</version>
   </parent>
 
   <artifactId>mockbridge-jdk</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4-SNAPSHOT</version>
   <name>jdk</name>
 
   <properties>
@@ -50,6 +50,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+        </configuration>
       </plugin>
     </plugins>
   </build>
