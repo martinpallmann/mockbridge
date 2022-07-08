@@ -7,12 +7,11 @@ fi
 
 git checkout releases
 git rebase main
-mvn versions:set -DremoveSnapshot=true
-mvn versions:commit
+mvn versions:set -DremoveSnapshot=true versions:commit
 version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
 git commit -am "new version"
 git tag -a "v$version" -m "version $version"
-git push
-mvn versions:set -DnextSnapshot=true
+git push --force
+mvn versions:set -DnextSnapshot=true versions:commit
 git commit -am "new snapshot version"
 git checkout main
