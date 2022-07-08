@@ -1,17 +1,41 @@
-#! /bin/sh
+#! /bin/sh -eu
+
+function step() {
+   echo '::::::::::::::::::::::::::::::::::::::::'
+   echo $1
+   echo '::::::::::::::::::::::::::::::::::::::::'
+   echo
+}
 
 if [[ $(git diff --stat) != '' ]]; then
   echo 'Repository is dirty. Aborting.'
   exit 1
 fi
 
+step 'Checkout branch <releases>'
 git checkout releases
-git rebase main
+
+step 'Reset branch <releases>'
+git reset --hard main
+
+step 'Remove suffix from version number'
 mvn versions:set -DremoveSnapshot=true versions:commit
+
+step 'Save version number'
 version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
+step 'Commit and tag version'
 git commit -am "new version"
 git tag -a "v$version" -m "version $version"
+
+step 'Push branch <releases>'
 git push --force
+
+step 'Checkout branch <main>'
 git checkout main
+
+step 'Set new snapshot version'
 mvn versions:set -DnextSnapshot=true versions:commit
+
+step 'Commit the changes'
 git commit -am "new snapshot version"
