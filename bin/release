@@ -25,9 +25,14 @@ mvn versions:set -DremoveSnapshot=true versions:commit
 step 'Save version number'
 version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
 
-step 'Commit and tag version'
+step 'Commit version'
 git commit -am "new version"
+
+step "Tag version $version"
 git tag -a "v$version" -m "version $version"
+
+step "Push tag"
+git push origin "v$version"
 
 step 'Push branch <releases>'
 git push --force
