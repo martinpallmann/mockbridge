@@ -12,6 +12,6 @@ version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
 git commit -am "new version"
 git tag -a "v$version" -m "version $version"
 git push --force
+git checkout main
 mvn versions:set -DnextSnapshot=true versions:commit
 git commit -am "new snapshot version"
-git checkout main
