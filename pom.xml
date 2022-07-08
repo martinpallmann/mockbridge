@@ -5,7 +5,7 @@
 
   <groupId>de.martinpallmann</groupId>
   <artifactId>mockbridge</artifactId>
-  <version>0.0.19-SNAPSHOT</version>
+  <version>0.0.20-SNAPSHOT</version>
   <name>mockbridge</name>
   <description>Glue code to use WireMock without needing a network.</description>
   <packaging>pom</packaging>
