@@ -9,11 +9,11 @@
   <parent>
     <artifactId>mockbridge</artifactId>
     <groupId>de.martinpallmann</groupId>
-    <version>0.0.22-SNAPSHOT</version>
+    <version>0.0.22</version>
   </parent>
 
   <artifactId>mockbridge-jdk</artifactId>
-  <version>0.0.22-SNAPSHOT</version>
+  <version>0.0.22</version>
   <name>jdk</name>
 
   <properties>
