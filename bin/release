@@ -5,7 +5,7 @@ if [[ $(git diff --stat) != '' ]]; then
   exit 1
 fi
 
-mvn mvn --quiet -DremoveSnapshot=true versions:set versions:commit
+mvn --quiet -DremoveSnapshot=true versions:set versions:commit
 version=$(mvn --quiet -Dexpression=project.version -DforceStdout help:evaluate)
 git commit --quiet --all --message="new version: $version"
 git tag --message="version $version" --annotate "v$version"
