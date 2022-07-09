@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{{ page.title }}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>{% include style.css %}</style>
+</head>
+<body>
+<a href="/">Martin Pallmann</a>
+<hr>
+<h1>{{ page.title }}</h1>
+{{ content }}
+</body>
+</html>
