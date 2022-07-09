@@ -1,6 +1,7 @@
 package de.martinpallmann.mockbridge.jdk.api;
 
 import com.github.tomakehurst.wiremock.http.*;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,13 +12,17 @@ import java.util.regex.Pattern;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class JdkRequest implements Request {
 
     private final Logger logger = LoggerFactory.getLogger(JdkRequest.class);
 
     private final HttpRequest wrapped;
-    private final Converter converter = new Converter();
+    private final Converter converter;
+
+    public static Request request(HttpRequest wrapped) {
+        return new JdkRequest(wrapped, Converter.getInstance());
+    }
 
     @Override
     public String getUrl() {

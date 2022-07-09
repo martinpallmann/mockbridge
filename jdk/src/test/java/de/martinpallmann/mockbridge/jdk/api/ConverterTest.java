@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ConverterTest {
 
-    private final Converter converter = new Converter();
+    private final Converter converter = Converter.getInstance();
 
     @Test
     public void noHeaders() {

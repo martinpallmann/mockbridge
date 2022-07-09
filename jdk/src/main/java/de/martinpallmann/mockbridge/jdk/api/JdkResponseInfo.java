@@ -1,21 +1,22 @@
 package de.martinpallmann.mockbridge.jdk.api;
 
 import com.github.tomakehurst.wiremock.http.Response;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpResponse;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class JdkResponseInfo implements HttpResponse.ResponseInfo {
 
     private final HttpClient.Version version;
     private final Response response;
     private final Converter converter;
 
-    public static HttpResponse.ResponseInfo of(HttpClient.Version version, Response response) {
-        return new JdkResponseInfo(version, response, new Converter());
+    public static HttpResponse.ResponseInfo responseInfo(HttpClient.Version version, Response response) {
+        return new JdkResponseInfo(version, response, Converter.getInstance());
     }
 
     @Override

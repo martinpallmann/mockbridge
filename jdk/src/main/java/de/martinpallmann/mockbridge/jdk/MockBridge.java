@@ -25,6 +25,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static de.martinpallmann.mockbridge.jdk.api.JdkRequest.request;
+import static de.martinpallmann.mockbridge.jdk.api.JdkResponseInfo.responseInfo;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MockBridge extends HttpClient {
@@ -233,8 +235,8 @@ public class MockBridge extends HttpClient {
             HttpResponse.BodyHandler<T> bodyHandler,
             HttpResponse.PushPromiseHandler<T> pushPromiseHandler
     ) {
-        final Response response = server.stubRequest(new JdkRequest(httpRequest));
-        final HttpResponse.ResponseInfo responseInfo = JdkResponseInfo.of(version, response);
+        final Response response = server.stubRequest(request(httpRequest));
+        final HttpResponse.ResponseInfo responseInfo = responseInfo(version, response);
         final HttpResponse.BodySubscriber<T> subscriber = bodyHandler.apply(responseInfo);
         subscriber.onSubscribe(new ResponseSubscription(subscriber, response));
         return subscriber

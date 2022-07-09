@@ -19,7 +19,7 @@ public class WiremockResponse<T> implements HttpResponse<T> {
     private final T body;
     private final HttpRequest request;
     private final Response response;
-    private final Converter converter = new Converter();
+    private final Converter converter = Converter.getInstance();
 
     public static <T> Function<T, HttpResponse<T>> of(HttpRequest request, Response response) {
         return body -> new WiremockResponse<>(body, request, response);
