@@ -7,8 +7,8 @@ fi
 
 mvn --quiet -DremoveSnapshot=true versions:set versions:commit
 version=$(mvn --quiet -Dexpression=project.version -DforceStdout help:evaluate)
-git commit --quiet --all --message="new version: $version"
+git commit --quiet --all --message="New version: $version"
 git tag --message="version $version" --annotate "v$version"
 git push --quiet origin "v$version"
 mvn --quiet -DnextSnapshot=true versions:set versions:commit
-git commit --quiet --all --message="new snapshot version"
+git commit --quiet --all --message="New snapshot version"
