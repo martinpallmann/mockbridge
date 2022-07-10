@@ -1,20 +1,11 @@
-<div id="breadcrumbs">
-  {% assign crumbs = page.url | remove:'/index.html' | split: '/' %}
+<div class="breadcrumbs">
   <a href="/">Martin Pallmann</a>
+  {% assign crumbs = page.url | relative_url | remove:'/index.html' | split: '/' %}
   {% for crumb in crumbs offset: 1 %}
-  {% if forloop.last %}
-  / {{ page.title }}
-  {% else %}
-  / <a href="{% assign crumb_limit = forloop.index | plus: 1 %}{% for crumb in crumbs limit: crumb_limit %}{{ crumb | append: '/' | replace:'without-plugin/','without-plugins/' }}{% endfor %}">{{ crumb | replace:'-',' ' | remove:'.html' | capitalize }}</a>
-  {% endif %}
+    {% if forloop.last %}
+      / {{ crumb }}
+    {% else %}
+      / <a href="{% assign crumb_limit = forloop.index | plus: 1 %}{% for crumb in crumbs limit: crumb_limit %}{{ crumb | append: '/' }}{% endfor %}">{{ crumb }}</a>
+    {% endif %}
   {% endfor %}
 </div>
-<pre>
-  URL: {{ site.baseurl }}
-  Page URL: {{ page.url }}
-  {% assign breadcrumbs = page.url | relative_url | remove:'/index.html' | split: '/' %}
-  Breadcrumbs: {{ breadcrumbs }}
-  {% for breadcrumb in breadcrumbs %}
-    Breadcrumb: {{ breadcrumb }}
-  {% endfor %}
-</pre>
