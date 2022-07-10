@@ -7,6 +7,9 @@ fi
 
 mvn --quiet -DremoveSnapshot=true versions:set versions:commit
 version=$(mvn --quiet -Dexpression=project.version -DforceStdout help:evaluate)
+echo 'groupId,artifactId,type,version,scope' > docs/_data/versions.csv
+echo "de.martinpallmann,mockbridge-jdk,jar,$version,provided" >> docs/_data/versions.csv
+mvn -o dependency:list  | grep "wiremock" | uniq | sed -e 's/^\[INFO\] *//' | tr ':' ',' >> docs/_data/versions.csv
 git commit --quiet --all --message="New version: $version"
 git tag --message="version $version" --annotate "v$version"
 git push --quiet origin "v$version"

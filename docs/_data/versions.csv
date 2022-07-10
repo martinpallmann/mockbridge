@@ -1,2 +1,3 @@
-mockbridge,wiremock
-1,2
+groupId,artifactId,type,version,scope
+de.martinpallmann,mockbridge-jdk,jar,0.0.22,provided
+com.github.tomakehurst,wiremock-jre8,jar,2.33.2,provided
