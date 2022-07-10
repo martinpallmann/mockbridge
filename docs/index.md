@@ -1,8 +1,8 @@
 ---
-title: MockBridge
+layout: default
 ---
 
-<img src="gfx/logo.svg" alt="MockBridge" style="width: 300px;">
+<img src="https://martinpallmann.de/mockbridge/gfx/logo.svg" alt="MockBridge" style="width: 300px;">
 
 Mockbridge helps you to mock http requests
 without the need to go over the wire.

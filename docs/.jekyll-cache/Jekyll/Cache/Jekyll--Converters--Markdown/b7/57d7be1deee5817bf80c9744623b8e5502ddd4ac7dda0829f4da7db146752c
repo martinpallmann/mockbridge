@@ -1,0 +1,82 @@
+I"�<p><img src="https://martinpallmann/mockbridge/gfx/logo.svg" alt="MockBridge" style="width: 300px;" /></p>
+
+<p>Mockbridge helps you to mock http requests
+without the need to go over the wire.</p>
+
+<h2 id="usage">Usage</h2>
+
+<p>Assuming you have a Java http client in your code like this:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.net.http.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.URI</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">EchoClient</span> <span class="o">{</span>
+    
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">HttpClient</span> <span class="n">httpClient</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="no">URI</span> <span class="n">baseUri</span><span class="o">;</span>
+    
+    <span class="kd">public</span> <span class="nf">EchoClient</span><span class="o">(</span><span class="nc">HttpClient</span> <span class="n">httpClient</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">httpClient</span> <span class="o">=</span> <span class="n">httpClient</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">baseUri</span> <span class="o">=</span> <span class="no">URI</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"http://example.com/"</span><span class="o">);</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getEcho</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">HttpResponse</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">response</span> <span class="o">=</span> <span class="n">httpClient</span><span class="o">.</span><span class="na">send</span><span class="o">(</span>
+            <span class="nc">HttpRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">(</span><span class="n">baseUri</span><span class="o">).</span><span class="na">build</span><span class="o">(),</span>
+            <span class="nc">HttpResponse</span><span class="o">.</span><span class="na">BodyHandlers</span><span class="o">.</span><span class="na">ofString</span><span class="o">()</span>
+        <span class="o">);</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="na">body</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now you might want to test the client.
+<a href="https://wiremock.org">Wiremock</a> provides a method to do direct testing, which they describe here:
+<a href="https://wiremock.org/docs/running-without-http-server/">https://wiremock.org/docs/running-without-http-server/</a></p>
+
+<p>If it weren’t for Mockbridge you’d need to write glue code
+to map between the JDK HTTPClients request and response on one side
+and the Wiremock representation on the other side.</p>
+
+<p>Mockbridge does that for you.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">org.junit.jupiter.api.Test</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.net.URI</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.http.HttpClient</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.http.HttpRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.http.HttpResponse</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">com</span><span class="o">.</span><span class="na">github</span><span class="o">.</span><span class="na">tomakehurst</span><span class="o">.</span><span class="na">wiremock</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">WireMock</span><span class="o">.*;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">junit</span><span class="o">.</span><span class="na">jupiter</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">Assertions</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">de</span><span class="o">.</span><span class="na">martinpallmann</span><span class="o">.</span><span class="na">mockbridge</span><span class="o">.</span><span class="na">jdk</span><span class="o">.</span><span class="na">MockBridge</span><span class="o">.</span><span class="na">httpClient</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MockBridgeTest</span> <span class="o">{</span>
+
+    <span class="kd">final</span> <span class="nc">EchoClient</span> <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EchoClient</span><span class="o">(</span><span class="n">httpClient</span><span class="o">());</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// WireMock stubbing. See https://wiremock.org/docs/stubbing/</span>
+        <span class="n">stubFor</span><span class="o">(</span><span class="n">get</span><span class="o">(</span><span class="n">anyUrl</span><span class="o">()).</span><span class="na">willReturn</span><span class="o">(</span><span class="n">ok</span><span class="o">().</span><span class="na">withBody</span><span class="o">(</span><span class="s">"OK"</span><span class="o">)));</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="s">"OK"</span><span class="o">,</span> <span class="n">client</span><span class="o">.</span><span class="na">getEcho</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="installation">Installation</h2>
+<p>Maven:</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>de.martinpallmann<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>mockbridge<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>${mockbridge.version}<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>com.github.tomakehurst<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>wiremock-jre8<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>${wiremock.version}<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div></div>
+
+:ET
