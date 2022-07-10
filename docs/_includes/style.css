@@ -1,0 +1,56 @@
+html {
+  overflow-y: scroll;
+  font-family: Georgia, 'Times New Roman', Times, serif
+}
+body {
+  margin: 40px auto;
+  max-width: 800px;
+  line-height: 1.6;
+  font-size: 18px;
+  color: #444;
+  padding: 0 10px
+}
+h1,h2,h3 {
+  line-height: 1.2
+}
+hr {
+  color: #ccc;
+  background-color: #ccc;
+  height: 1px;
+  border: none;
+}
+pre {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background-color: #fafafa;
+  padding: 1rem;
+  margin: 0 0 1rem 0;
+  white-space: pre;
+  overflow: auto;
+}
+pre.highlight span.k {
+  color: #000000;
+  font-weight: bold;
+}
+pre.highlight span.nc {
+  color: #445588;
+  font-weight: bold;
+}
+pre.highlight span.s {
+  color: #183691;
+}
+a {
+  color: #183691;
+}
+code {
+  line-height: 1.45em;
+  font-family: Consolas, "Liberation Mono", monospace;
+  font-size: 0.9em;
+  font-weight: normal;
+  padding: 0;
+}
+p code {
+  background-color: #eee;
+  border-radius: 3px;
+  border: 3px solid #eee;
+}
