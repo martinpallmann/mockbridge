@@ -10,7 +10,7 @@
   <artifactId>mockbridge</artifactId>
   <version>0.0.23-SNAPSHOT</version>
   <name>mockbridge</name>
-  <description>Glue code to use WireMock without needing a network.</description>
+  <description>WireMock without the wire</description>
   <packaging>pom</packaging>
   <url>https://www.martinpallmann.de/mockbridge</url>
   <licenses>
@@ -35,6 +35,7 @@
 
   <modules>
     <module>jdk</module>
+    <module>tck</module>
   </modules>
 
   <properties>

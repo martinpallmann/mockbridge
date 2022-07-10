@@ -26,7 +26,7 @@ public class JdkRequest implements Request {
 
     @Override
     public String getUrl() {
-        final String result = wrapped.uri().toString();
+        final String result = wrapped.uri().getPath();
         logger.debug("getUrl: {}", result);
         return result;
     }
@@ -85,32 +85,44 @@ public class JdkRequest implements Request {
 
     @Override
     public HttpHeader header(String s) {
+        final HttpHeader result;
         if (firstHeader(s).isEmpty()) {
-            return HttpHeader.empty(s);
+            result = HttpHeader.empty(s);
+        } else {
+            result = HttpHeader.httpHeader(s, wrapped.headers().allValues(s).toArray(new String[0]));
         }
-        return HttpHeader.httpHeader(s, wrapped.headers().allValues(s).toArray(new String[0]));
+        logger.debug("header: {}", result);
+        return result;
     }
 
     @Override
     public ContentTypeHeader contentTypeHeader() {
-        return firstHeader(ContentTypeHeader.KEY)
+        ContentTypeHeader result = firstHeader(ContentTypeHeader.KEY)
                 .map(ContentTypeHeader::new)
                 .orElse(ContentTypeHeader.absent());
+        logger.debug("contentTypeHeader: {}", result);
+        return result;
     }
 
     @Override
     public HttpHeaders getHeaders() {
-        return converter.fromJdk(wrapped.headers());
+        HttpHeaders result = converter.fromJdk(wrapped.headers());
+        logger.debug("getHeaders: {}", result);
+        return result;
     }
 
     @Override
     public boolean containsHeader(String s) {
-        return firstHeader(s).isPresent();
+        boolean result = firstHeader(s).isPresent();
+        logger.debug("containsHeader: {}", result);
+        return result;
     }
 
     @Override
     public Set<String> getAllHeaderKeys() {
-        return wrapped.headers().map().keySet();
+        Set<String> result = wrapped.headers().map().keySet();
+        logger.debug("getAllHeaderKeys: {}", result);
+        return result;
     }
 
     @Override
@@ -120,7 +132,7 @@ public class JdkRequest implements Request {
 
     @Override
     public QueryParameter queryParameter(String key) {
-        return QueryParameter.queryParam(
+        QueryParameter result = QueryParameter.queryParam(
             key,
             Pattern
                 .compile("&")
@@ -130,6 +142,8 @@ public class JdkRequest implements Request {
                 .map(s -> s[1])
                 .toArray(String[]::new)
         );
+        logger.debug("queryParameter: {}", result);
+        return result;
     }
 
     @Override

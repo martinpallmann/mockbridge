@@ -44,5 +44,11 @@
       <artifactId>log4j-slf4j-impl</artifactId>
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>de.martinpallmann</groupId>
+          <artifactId>mockbridge-tck</artifactId>
+          <version>0.0.23-SNAPSHOT</version>
+          <scope>test</scope>
+      </dependency>
   </dependencies>
 </project>
