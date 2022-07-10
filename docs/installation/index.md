@@ -2,6 +2,8 @@
 layout: default
 ---
 
+<img src="https://martinpallmann.de/mockbridge/gfx/logo.svg" alt="MockBridge" style="width: 200px;">
+
 # Installation
 
 Maven:
