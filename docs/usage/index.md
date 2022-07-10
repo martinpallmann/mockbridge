@@ -17,14 +17,20 @@ public class EchoClient {
     
     public EchoClient(HttpClient httpClient) {
         this.httpClient = httpClient;
-        this.baseUri = URI.create("http://example.com/");
+        this.baseUri = 
+            URI.create("http://example.com/");
     }
     
     public String getEcho() {
-        final HttpResponse<String> response = httpClient.send(
-            HttpRequest.newBuilder(baseUri).build(),
-            HttpResponse.BodyHandlers.ofString()
-        );
+        final HttpResponse<String> response = 
+            httpClient.send(
+                HttpRequest
+                    .newBuilder(baseUri)
+                    .build(),
+                HttpResponse
+                    .BodyHandlers
+                    .ofString()
+            );
         return response.body();
     }
 }
@@ -54,12 +60,17 @@ import static de.martinpallmann.mockbridge.jdk.MockBridge.httpClient;
 
 public class MockBridgeTest {
 
-    final EchoClient client = new EchoClient(httpClient());
+    final EchoClient client = 
+            new EchoClient(httpClient());
 
     @Test
     public void test() {
-        // WireMock stubbing. See https://wiremock.org/docs/stubbing/
-        stubFor(get(anyUrl()).willReturn(ok().withBody("OK")));
+        // WireMock stubbing. 
+        // See https://wiremock.org/docs/stubbing/
+        stubFor(
+            get(anyUrl())
+                .willReturn(ok().withBody("OK"))
+        );
         assertEquals("OK", client.getEcho());
     }
 }
