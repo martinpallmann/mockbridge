@@ -10,6 +10,7 @@
   {% endfor %}
 </div>
 <pre>
+URL: {{ site.baseurl }}
 Page URL: {{ page.url }}
 {% assign breadcrumbs = page.url | split: '/' %}
 {% for breadcrumb in breadcrumbs %}
