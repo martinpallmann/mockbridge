@@ -1,5 +1,7 @@
 package de.martinpallmann.mockbridge.jdk.api;
 
+import com.github.tomakehurst.wiremock.common.Encoding;
+import com.github.tomakehurst.wiremock.common.Urls;
 import com.github.tomakehurst.wiremock.http.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -132,16 +134,8 @@ public class JdkRequest implements Request {
 
     @Override
     public QueryParameter queryParameter(String key) {
-        QueryParameter result = QueryParameter.queryParam(
-            key,
-            Pattern
-                .compile("&")
-                .splitAsStream(wrapped.uri().getQuery())
-                .map(s -> s.split("=", 2))
-                .filter(s -> key.equals(s[0]))
-                .map(s -> s[1])
-                .toArray(String[]::new)
-        );
+        Map<String, QueryParameter> query = Urls.splitQuery(wrapped.uri());
+        QueryParameter result = query.get(key);
         logger.debug("queryParameter: {}", result);
         return result;
     }
@@ -160,7 +154,7 @@ public class JdkRequest implements Request {
 
     @Override
     public String getBodyAsBase64() {
-        return Base64.getEncoder().encodeToString(getBody());
+        return Encoding.encodeBase64(getBody());
     }
 
     @Override

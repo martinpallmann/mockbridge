@@ -1,12 +1,20 @@
 package de.martinpallmann.mockbridge.jdk;
 
+import com.github.tomakehurst.wiremock.admin.model.ListStubMappingsResult;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.direct.DirectCallHttpServer;
 import com.github.tomakehurst.wiremock.direct.DirectCallHttpServerFactory;
+import com.github.tomakehurst.wiremock.http.LoggedResponse;
 import com.github.tomakehurst.wiremock.http.Response;
+import com.github.tomakehurst.wiremock.stubbing.StubMapping;
+import com.github.tomakehurst.wiremock.verification.LoggedRequest;
+import com.github.tomakehurst.wiremock.verification.NearMiss;
 import de.martinpallmann.mockbridge.jdk.api.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
@@ -19,6 +27,7 @@ import java.net.CookieHandler;
 import java.net.ProxySelector;
 import java.net.http.*;
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -30,6 +39,8 @@ import static de.martinpallmann.mockbridge.jdk.api.JdkResponseInfo.responseInfo;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MockBridge extends HttpClient {
+
+    private static final Logger logger = LoggerFactory.getLogger(MockBridge.class);
 
     private final DirectCallHttpServer server;
     private final Version version;
@@ -182,7 +193,9 @@ public class MockBridge extends HttpClient {
         CompletableFuture<HttpResponse<T>> cf = null;
         try {
             cf = sendAsync(request, responseBodyHandler, null);
-            return cf.get();
+            final HttpResponse<T> result = cf.get();
+
+            return result;
         } catch (InterruptedException ie) {
             if (cf != null) cf.cancel(true);
             throw ie;
@@ -236,6 +249,12 @@ public class MockBridge extends HttpClient {
             HttpResponse.PushPromiseHandler<T> pushPromiseHandler
     ) {
         final Response response = server.stubRequest(request(httpRequest));
+        for (LoggedRequest r: WireMock.findUnmatchedRequests()) {
+            logger.warn("unmatched request: {}", r);
+            for (NearMiss m: WireMock.findNearMissesFor(r)) {
+                logger.warn("near miss: {}", m);
+            }
+        }
         final HttpResponse.ResponseInfo responseInfo = responseInfo(version, response);
         final HttpResponse.BodySubscriber<T> subscriber = bodyHandler.apply(responseInfo);
         subscriber.onSubscribe(new ResponseSubscription(subscriber, response));

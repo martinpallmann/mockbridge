@@ -1,7 +1,9 @@
 package de.martinpallmann.mockbridge.tck;
 
 
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
+import com.github.tomakehurst.wiremock.stubbing.StubImport;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.github.tomakehurst.wiremock.stubbing.StubMappingCollection;
 import de.martinpallmann.mockbridge.tck.api.MappingFactory;
@@ -25,7 +27,7 @@ public abstract class TckSuite {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected abstract TestResponse send(TestRequest request);
+    protected abstract TestResponse send(TestRequest request) throws Exception;
 
     @TestFactory
     Stream<DynamicTest> tests() throws IOException {
@@ -38,12 +40,13 @@ public abstract class TckSuite {
                                 .of("/mappings/" + s)
                                 .getMappingOrMappings();
 
-                return mappings.stream().map(mapping ->
-                    dynamicTest(name(s, mapping.getName()), () -> {
+                return mappings.stream().map(mapping -> {
+                    WireMock.importStubs(StubImport.stubImport().stub(mapping).build());
+                    return dynamicTest(name(s, mapping.getName()), () -> {
                         final TestRequest request = TestRequest.of(mapping.getRequest());
                         assertEquals(TestResponse.of(mapping.getResponse()), send(request));
-                    })
-                );
+                    });
+                });
             });
     }
 
@@ -55,7 +58,7 @@ public abstract class TckSuite {
     }
 
 
-    private List<String> getMappings() throws IOException { // TODO maybe get these mappings from Wiremock
+    private List<String> getMappings() throws IOException {
         List<String> filenames = new ArrayList<>();
         try(
             InputStream in = getClass().getResourceAsStream("/mappings");

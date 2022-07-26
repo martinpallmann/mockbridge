@@ -18,6 +18,10 @@ public class TestRequest {
     String method;
     Map<String, List<String>> headers;
 
+    public String getAbsoluteUrl() {
+        return "https://example.com" + url;
+    }
+
     public static TestRequest of(RequestPattern pattern) {
         return TestRequest
                 .builder()
