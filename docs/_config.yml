@@ -1,5 +1,6 @@
 remote_theme: 'martinpallmann/untheme'
 name: 'Martin Pallmann'
+home: 'martinpallmann.de'
 url: https://martinpallmann.de
 baseurl: /mockbridge
 twitter_handle: '@martinpallmann'
