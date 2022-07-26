@@ -1,2 +1,10 @@
+remote_theme: 'martinpallmann/untheme'
+name: 'Martin Pallmann'
 url: https://martinpallmann.de
 baseurl: /mockbridge
+twitter_handle: '@martinpallmann'
+logo:
+  url: '/mockbridge/gfx/logo.svg'
+  alt: 'Mockbridge'
+  width: '200px'
+  height: '36px'
