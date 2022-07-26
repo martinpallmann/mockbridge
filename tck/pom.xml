@@ -9,11 +9,11 @@
     <parent>
         <artifactId>mockbridge</artifactId>
         <groupId>de.martinpallmann</groupId>
-        <version>0.0.23-SNAPSHOT</version>
+        <version>0.0.23</version>
     </parent>
 
     <artifactId>mockbridge-tck</artifactId>
-    <version>0.0.23-SNAPSHOT</version>
+    <version>0.0.23</version>
     <name>tck</name>
 
     <properties>
