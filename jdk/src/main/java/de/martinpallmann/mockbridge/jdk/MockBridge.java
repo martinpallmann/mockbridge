@@ -69,6 +69,12 @@ public class MockBridge extends HttpClient {
         return Optional.ofNullable(cookieHandler);
     }
 
+    /**
+     * add a CookieHandler to the HttpClient
+     *
+     * @param cookieHandler the new cookie handler
+     * @return the new http client with the desired cookie handler
+     */
     public MockBridge cookieHandler(CookieHandler cookieHandler) {
         return new MockBridge(
                 server,
@@ -189,11 +195,9 @@ public class MockBridge extends HttpClient {
         CompletableFuture<HttpResponse<T>> cf = null;
         try {
             cf = sendAsync(request, responseBodyHandler, null);
-            final HttpResponse<T> result = cf.get();
-
-            return result;
+            return cf.get();
         } catch (InterruptedException ie) {
-            if (cf != null) cf.cancel(true);
+            cf.cancel(true);
             throw ie;
         } catch (ExecutionException e) {
             final Throwable throwable = e.getCause();
@@ -204,9 +208,9 @@ public class MockBridge extends HttpClient {
             } else if (throwable instanceof SecurityException) {
                 throw new SecurityException(msg, throwable);
             } else if (throwable instanceof HttpConnectTimeoutException) {
-                HttpConnectTimeoutException hcte = new HttpConnectTimeoutException(msg);
-                hcte.initCause(throwable);
-                throw hcte;
+                HttpConnectTimeoutException exception = new HttpConnectTimeoutException(msg);
+                exception.initCause(throwable);
+                throw exception;
             } else if (throwable instanceof HttpTimeoutException) {
                 throw new HttpTimeoutException(msg);
             } else if (throwable instanceof ConnectException) {

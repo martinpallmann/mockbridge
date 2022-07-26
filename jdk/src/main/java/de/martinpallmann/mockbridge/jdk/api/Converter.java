@@ -2,8 +2,6 @@ package de.martinpallmann.mockbridge.jdk.api;
 
 import com.github.tomakehurst.wiremock.http.HttpHeader;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 import java.util.*;
 

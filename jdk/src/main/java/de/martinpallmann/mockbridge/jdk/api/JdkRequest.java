@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.http.HttpRequest;
 import java.util.*;
-import java.util.regex.Pattern;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -178,6 +177,7 @@ public class JdkRequest implements Request {
     }
 
     @Override
+    @SuppressWarnings("Guava")
     public com.google.common.base.Optional<Request> getOriginalRequest() {
         return com.google.common.base.Optional.absent();
     }
