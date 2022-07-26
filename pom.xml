@@ -8,7 +8,7 @@
 
   <groupId>de.martinpallmann</groupId>
   <artifactId>mockbridge</artifactId>
-  <version>0.0.24-SNAPSHOT</version>
+  <version>0.0.24</version>
   <name>mockbridge</name>
   <description>WireMock without the wire</description>
   <packaging>pom</packaging>
