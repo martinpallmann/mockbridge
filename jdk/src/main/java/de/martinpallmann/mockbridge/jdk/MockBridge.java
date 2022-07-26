@@ -1,13 +1,10 @@
 package de.martinpallmann.mockbridge.jdk;
 
-import com.github.tomakehurst.wiremock.admin.model.ListStubMappingsResult;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.direct.DirectCallHttpServer;
 import com.github.tomakehurst.wiremock.direct.DirectCallHttpServerFactory;
-import com.github.tomakehurst.wiremock.http.LoggedResponse;
 import com.github.tomakehurst.wiremock.http.Response;
-import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.github.tomakehurst.wiremock.verification.NearMiss;
 import de.martinpallmann.mockbridge.jdk.api.*;
@@ -27,7 +24,6 @@ import java.net.CookieHandler;
 import java.net.ProxySelector;
 import java.net.http.*;
 import java.time.Duration;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
