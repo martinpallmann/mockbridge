@@ -63,7 +63,7 @@
     <junit.version>5.9.2</junit.version>
     <log4.version>2.19.0</log4.version>
     <lombock.version>1.18.26</lombock.version>
-    <wiremock.version>2.33.2</wiremock.version>
+    <wiremock.version>2.35.0</wiremock.version>
     <logstash.version>1.7</logstash.version>
   </properties>
 
