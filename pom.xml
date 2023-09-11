@@ -62,7 +62,7 @@
     <maven.compiler.target>11</maven.compiler.target>
     <junit.version>5.9.3</junit.version>
     <log4.version>2.20.0</log4.version>
-    <lombock.version>1.18.26</lombock.version>
+    <lombock.version>1.18.28</lombock.version>
     <wiremock.version>2.35.1</wiremock.version>
     <logstash.version>1.7</logstash.version>
   </properties>
